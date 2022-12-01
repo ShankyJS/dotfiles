@@ -1,0 +1,5 @@
+[user]
+    email = jhan.silva@pager.com
+    name = Jhan Silva
+[diff "sopsdiffer"]
+    textconv = sops -d

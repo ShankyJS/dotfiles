@@ -1,0 +1,5 @@
+[includeIf "gitdir:~/Documents/pager/"]
+  path = ~/shankyjs-config/gitconfig/pager
+
+[includeIf "gitdir:~/Documents/os/"]
+  path = ~/shankyjs-config/gitconfig/os
