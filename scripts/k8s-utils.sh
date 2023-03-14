@@ -150,3 +150,70 @@ s-list-chart-services(){
         kubectl -n="$i" --context="$context" get deploy -l app.kubernetes.io/managed-by=Helm -o name | egrep  -v "kong|default"
     done
 }
+
+# Function to repeat a passed command
+# Usage: rerun [-t] COMMAND FLAGS
+function rerun {
+  local RERUN_UNTIL_FAIL
+  local SUCCESS="\e[1;31mSUCCESS: \e[1;32mCTRL + C to cancel!\e[0m Run:"
+  local FAIL="\e[1;31mERROR: \e[1;32mCTRL + C to cancel!\e[0m Run:"
+
+  if [[ $# -eq 0 ]] ||  [[ $1 == "-h" ]]; then
+    echo "You didn't pass any commands! You FOOL!!!"
+    echo ""
+    echo "USAGE: rerun COMMAND"
+    echo "EXAMPLE: To test login to a node. Notice \e[1;32m \` \` \e[0m for aliases!"
+    echo "         \e[1;32mrerun \`baptflnpd1mop101ops 'test -f ~/.bashrc'\`\e[0m"
+    echo "EXAMPLE: To run \e[1;32git pull\e[0m 3 times"
+    echo "         \e[1;32mrerun -t 3 git pull\e[0m"
+    echo "EXAMPLE: To run \e[1;32git pull\e[0m without exiting"
+    echo "         \e[1;32mrerun -f git pull\e[0m"
+    echo ""
+    return 0
+  fi
+
+  # Set's total number of runs before exiting.
+  TOTAL_RUN=1000
+  CURRENT_RUN=1
+
+  # Checks to see if user passed X runs
+  if [[ $1 == "-t" ]]; then
+    TOTAL_RUN=$2
+    shift 2
+  fi
+
+  if [[ $1 == "-r" ]]; then
+    RERUN_UNTIL_FAIL=$2
+    shift 2
+  fi
+
+  if [[ $1 == "-f" ]]; then
+    ALWAYS_RERUN=$2
+    RERUN_UNTIL_FAIL=100000
+    shift 1
+  fi
+
+  if [[ -z ${RERUN_UNTIL_FAIL} ]]; then
+    # Run the actually command, sleeping 1 second in between
+    until "$@" || [[ $CURRENT_RUN -gt $TOTAL_RUN ]] ; do
+      echo "\e[1;31mERROR: \e[1;32mCTRL + C to cancel!\e[0m Run: ${CURRENT_RUN}"
+      CURRENT_RUN=$((CURRENT_RUN+1))
+      sleep 1
+    done
+  else
+    for n in $(seq $RERUN_UNTIL_FAIL); do
+      echo "\e[1;32mINFO: \e[1;31m Run Number ${CURRENT_RUN}:\e[0m $@"
+      if [[ -z ${ALWAYS_RERUN} ]]; then
+        $@ || return 1
+      else
+        $@ && echo ${SUCCESS} ${CURRENT_RUN} || echo ${FAIL} ${CURRENT_RUN}
+      fi
+      CURRENT_RUN=$((CURRENT_RUN+1))
+      sleep 1
+    done
+  fi
+}
+
+decrypt-secrets() {
+  kubectl -n $1 get secret $2 -o json | jq -r '.data | to_entries[] | "\(.key): \(.value | @base64d)"'
+}

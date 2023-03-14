@@ -7,7 +7,7 @@ source ~/.zshrc
 homebrew_packages() {
     echo "Installing brew dependencies"
     brew tap garden-io/garden
-    brew install tfenv kubectx garden-cli awscli vault gh sshuttle fzf k9s gojq
+    brew install tfenv kubectx garden-cli awscli vault gh sshuttle fzf k9s gojq postgresql
     brew install --cask google-cloud-sdk amethyst visual-studio-code 1password/tap/1password-cli
 }
 

@@ -17,6 +17,7 @@ c-cloudbuild-decrypt-to-envars(){
         printf -v "$key" '%s' "${secret}"
         export $key="${secret}"
     done
+    unset GITHUB_TOKEN
 }
 
 c-cloudbuild-encrypt-value(){

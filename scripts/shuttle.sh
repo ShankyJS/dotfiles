@@ -1,4 +1,3 @@
-alias getrootpass="op run --no-masking -- printenv PAGER_PASSWORD"
 sshstop() {
     ps | grep .ssh/google_compute_engine | awk '{ print $1 }' | xargs kill
 }

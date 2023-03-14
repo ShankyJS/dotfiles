@@ -17,3 +17,14 @@ alias gactivate="gcloud config configurations activate $1"
 alias gset="gcloud config set $1 $2"
 alias glist="gcloud config configurations list"
 alias gcreate="gcloud config configurations create $1"
+
+# Shuttle aliases
+alias getrootpass="op run --no-masking -- printenv PAGER_PASSWORD"
+alias getopcode="ykman oath accounts code |awk {'print $2'}"
+
+# Terraform aliases
+function getvaultenvars () {
+  export VAULT_ADDR=https://vault.pagerinc.com
+  export VAULT_ROLE=vault-cloud-build-role
+  export VAULT_TOKEN=$(op item get vault-root-token --field password)
+}
