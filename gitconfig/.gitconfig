@@ -3,3 +3,6 @@
 
 [includeIf "gitdir:~/Documents/os/"]
   path = ~/shankyjs-config/gitconfig/os
+
+[includeIf "gitdir:~/"]
+  path = ~/shankyjs-config/gitconfig/os

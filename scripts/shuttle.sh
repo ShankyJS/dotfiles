@@ -10,7 +10,7 @@ function sshstart () {
   zone=us-east1-c
   region=us-east1
   # Networks
-  network=172.16.0.0/16
+  network=172.16.0.0/12
   cloudsql=10.0.0.0/8
   #dev=172.16.1.0/28 sra=172.16.2.0/28 rr=172.16.3.0/28 cox=172.16.4.0/28 stg=172.16.5.0/28
 
@@ -35,7 +35,7 @@ function sshstart () {
     # Use expect to spawn sshuttle and send login creds (output is silenced)
     expect <(cat << EOF
 spawn sh -c {
-  sshuttle --ssh-cmd="gcloud --project ${project} compute ssh --ssh-key-expire-after 2m --quiet --zone $zone --ssh-flag=\"-ServerAliveInterval=30\"" -r $bastion $network $cloudsql
+  sshuttle --ssh-cmd="gcloud --project ${project} compute ssh --quiet --zone $zone --ssh-flag=\"-ServerAliveInterval=30\"" -r $bastion $network $cloudsql
 }
 expect "Password: "
 send "${SUDO_PASSWORD}\r"
