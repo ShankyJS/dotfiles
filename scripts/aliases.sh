@@ -28,3 +28,7 @@ function getvaultenvars () {
   export VAULT_ROLE=vault-cloud-build-role
   export VAULT_TOKEN=$(op item get vault-root-token --field password)
 }
+
+function getnpm () {
+  export NPM_TOKEN=$(op item get pgr-npmjs --field NPM_TOKEN)
+}
