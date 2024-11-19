@@ -6,9 +6,7 @@ source ~/.zshrc
 
 homebrew_packages() {
     echo "Installing brew dependencies"
-    brew tap garden-io/garden
-    brew install tfenv kubectx garden-cli awscli vault gh sshuttle fzf k9s gojq postgresql
-    brew install --cask google-cloud-sdk amethyst visual-studio-code 1password/tap/1password-cli
+    brew bundle install --file=./Brewfile
 }
 
 # if command brew works
@@ -23,22 +21,6 @@ else
     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
     eval "$(/opt/homebrew/bin/brew shellenv)"
     homebrew_packages
-fi
-
-if kubectl &> /dev/null
-then
-    echo "kubectl is already installed, no action needed."
-else
-    echo "kubectl was not present, installing"
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl"
-fi
-
-if helm version &> /dev/null
-then
-    echo "Helm is already installed, no action needed."
-else
-    echo "Helm was not present, installing"
-    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 fi
 
 if [ -d ~/.oh-my-zsh ]; then
@@ -64,9 +46,9 @@ if [ -d ~/.oh-my-zsh ]; then
 fi
 
 # if gitconfig is not present, copy it.
-if [ -f .gitconfig ]; then
+if [ ! -f ~/.gitconfig ]; then
     echo "gitconfig is not present, installing"
-    cp ./gitconfig/.gitconfig ~/
+    ln -s ./gitconfig/.gitconfig ~/.gitconfig # give me an absolute path to h
 else
     echo "gitconfig is present, no action needed."
 fi
@@ -75,11 +57,34 @@ if [ ! -f "~/.kube/config" ]; then
     echo "kubeconfig is present, no action needed."
 else
     gcloud components install gke-gcloud-auth-plugin
-    gcloud container clusters get-credentials dev-1 --region us-east1 --project develop-251413
-    gcloud container clusters get-credentials staging-1 --region us-east1 --project staging-197117
-    gcloud container clusters get-credentials qa-1 --region us-east1 --project staging-197117
-    gcloud container clusters get-credentials prod-1 --region us-east1 --project production-197117
-    gcloud container clusters get-credentials prod-2 --region us-east1 --project production-197117
-    gcloud container clusters get-credentials prod-3 --region us-east1 --project production-197117
-    gcloud container clusters get-credentials spinnaker-prod --region us-east1 --project animated-sniffle
+    # gcloud container clusters get-credentials dev-1 --region us-east1 --project develop-251413
+    # gcloud container clusters get-credentials staging-1 --region us-east1 --project staging-197117
+    # gcloud container clusters get-credentials qa-1 --region us-east1 --project staging-197117
+    # gcloud container clusters get-credentials prod-1 --region us-east1 --project production-197117
+    # gcloud container clusters get-credentials prod-2 --region us-east1 --project production-197117
+    # gcloud container clusters get-credentials prod-3 --region us-east1 --project production-197117
+    # gcloud container clusters get-credentials spinnaker-prod --region us-east1 --project animated-sniffle
+fi
+
+
+# check if nvm is installed
+if command -v nvm &> /dev/null; then
+    echo "nvm already installed"
+else
+    echo "nvm not installed"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    # make nvm command active without terminal reopening
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    # install node
+    nvm install v18
+    nvm alias default v18
+    nvm use default
+
+    # install/update global packages
+    npm install -g gulp-cli ts-node typescript
+
+    # install yarn
+    npm install --global yarn
 fi

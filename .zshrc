@@ -1,6 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 plugins=(
     git
@@ -18,3 +18,5 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 for file in ~/shankyjs-config/scripts/*; do
     source "$file"
 done
+
+export PATH="/usr/local/opt/libpq/bin:$PATH"'

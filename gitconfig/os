@@ -1,3 +1,13 @@
 [user]
     email = jhancarlossilva.c@gmail.com
     name = Jhan Silva
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIELhU/DAf3tNjlWrhRpHyzaI1uXTslsvHercWLH+gm/G
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+  gpgsign = true

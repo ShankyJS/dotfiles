@@ -1,6 +1,11 @@
 [includeIf "gitdir:~/Documents/pager/"]
   path = ~/shankyjs-config/gitconfig/pager
 
+[includeIf "gitdir:~/Documents/"]
+  path = ~/shankyjs-config/gitconfig/os
+[core]
+	editor = code --wait
+
 [includeIf "gitdir:~/Documents/os/"]
   path = ~/shankyjs-config/gitconfig/os
 
