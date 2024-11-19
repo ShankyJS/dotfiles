@@ -57,13 +57,15 @@ if [ ! -f "~/.kube/config" ]; then
     echo "kubeconfig is present, no action needed."
 else
     gcloud components install gke-gcloud-auth-plugin
-    # gcloud container clusters get-credentials dev-1 --region us-east1 --project develop-251413
-    # gcloud container clusters get-credentials staging-1 --region us-east1 --project staging-197117
-    # gcloud container clusters get-credentials qa-1 --region us-east1 --project staging-197117
-    # gcloud container clusters get-credentials prod-1 --region us-east1 --project production-197117
-    # gcloud container clusters get-credentials prod-2 --region us-east1 --project production-197117
-    # gcloud container clusters get-credentials prod-3 --region us-east1 --project production-197117
-    # gcloud container clusters get-credentials spinnaker-prod --region us-east1 --project animated-sniffle
+    gcloud container clusters get-credentials dev-1s --region us-east1 --project develop-251413
+    gcloud container clusters get-credentials staging-1 --region us-east1 --project staging-197117
+    gcloud container clusters get-credentials staging-1s --region us-east1 --project staging-197117
+    gcloud container clusters get-credentials qa-1s --region us-east1 --project staging-197117
+    gcloud container clusters get-credentials prod-1 --region us-east1 --project production-197117
+    gcloud container clusters get-credentials prod-2 --region us-east1 --project production-197117
+    gcloud container clusters get-credentials prod-3 --region us-east1 --project production-197117
+    gcloud container clusters get-credentials platform-tooling-1a --region us-east1 --project animated-sniffle
+    gcloud container clusters get-credentials prod-4s --region us-east1 --project production-197117
 fi
 
 

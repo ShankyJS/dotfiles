@@ -2,7 +2,7 @@
 
 # Exporting aliases
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-export PAGER_PASSWORD="op://Lifeline/login-laptop/password"
+export PAGER_PASSWORD="op://private/m2-login/password"
 export TFENV_ARCH=amd64
 export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 # export DOCKER_DEFAULT_PLATFORM=linux/amd64

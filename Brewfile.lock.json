@@ -1334,6 +1334,20 @@
             }
           }
         }
+      },
+      "sshuttle": {
+        "version": "1.1.2",
+        "bottle": {
+          "rebuild": 1,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "all": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/sshuttle/blobs/sha256:65afba150043765a0b7d5e5418fd31c0830db77e71694d9ca7968617cdecab96",
+              "sha256": "65afba150043765a0b7d5e5418fd31c0830db77e71694d9ca7968617cdecab96"
+            }
+          }
+        }
       }
     },
     "cask": {

@@ -14,7 +14,7 @@ function sshstart () {
   cloudsql=10.0.0.0/8
   #dev=172.16.1.0/28 sra=172.16.2.0/28 rr=172.16.3.0/28 cox=172.16.4.0/28 stg=172.16.5.0/28
 
-  gactivate shared
+  gactivate pgr-shared
   while ! [[ $(gcloud compute instances list | grep "${bastion}.*RUNNING") ]]; do
     echo "${bastion} is NOT running"
     gcloud compute instances start "${bastion}"
