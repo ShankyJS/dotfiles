@@ -17,7 +17,7 @@ source ~/.oh-my-zsh/oh-my-zsh.sh
 # Set PATH, MANPATH, etc., for Homebrew.
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-for file in ~/shankyjs-config/scripts/*; do
+for file in ~/dotfiles/scripts/*; do
     source "$file"
 done
 
