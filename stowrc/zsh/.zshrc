@@ -1,6 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="agnoster"
+ZSH_THEME="robbyrussell"
 
 plugins=(
     git
@@ -10,7 +10,7 @@ plugins=(
     kubectl
 )
 
-export XDG_CONFIG_HOME="~/.config"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 source ~/.oh-my-zsh/oh-my-zsh.sh
 

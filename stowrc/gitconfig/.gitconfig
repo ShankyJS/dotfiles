@@ -1,17 +1,17 @@
 [includeIf "gitdir:~/Documents/pager/"]
-  path = ~/shankyjs-config/gitconfig/pager
+  path = ~/.config/gitconfig/pager
 
 [includeIf "gitdir:~/Documents/"]
-  path = ~/shankyjs-config/gitconfig/os
+  path = ~/.config/gitconfig/os
 
 [core]
 	editor = cursor --wait
 
 [includeIf "gitdir:~/Documents/os/"]
-  path = ~/shankyjs-config/gitconfig/os
+  path = ~/.config/gitconfig/os
 
 [includeIf "gitdir:~/"]
-  path = ~/shankyjs-config/gitconfig/os
+  path = ~/.config/gitconfig/os
 
 [includeIf "gitdir:~/Documents/pof/"]
-  path = ~/shankyjs-config/gitconfig/pof
+  path = ~/.config/gitconfig/pof
