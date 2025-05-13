@@ -3,11 +3,15 @@
 
 [includeIf "gitdir:~/Documents/"]
   path = ~/shankyjs-config/gitconfig/os
+
 [core]
-	editor = code --wait
+	editor = cursor --wait
 
 [includeIf "gitdir:~/Documents/os/"]
   path = ~/shankyjs-config/gitconfig/os
 
 [includeIf "gitdir:~/"]
   path = ~/shankyjs-config/gitconfig/os
+
+[includeIf "gitdir:~/Documents/pof/"]
+  path = ~/shankyjs-config/gitconfig/pof

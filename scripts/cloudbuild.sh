@@ -38,3 +38,30 @@ c-cloudbuild-encrypt-value(){
     secret="$(echo "$value"| gcloud kms encrypt --project=$project --keyring=$keyRing --key=$cryptoKey --location=$location --ciphertext-file=- --plaintext-file=- | base64)"
     echo "    $variable: '$secret'" >> "$the_file"
 }
+
+s-setup-iap () {
+    # use c-decrypt-to-envars on one of the project repos first
+    local GATE_ENDPOINT=https://spinnaker.pagerinc.com/gate
+    local SERVICE_ACCOUNT_DEST=$HOME/.spin/spinnaker_sa.json
+    local SPIN_CONFIG_DEST=~/.spin/config
+    printf "%s" "$SPINNAKER_SA" > "$SERVICE_ACCOUNT_DEST"
+    cat <<EOF >${SPIN_CONFIG_DEST}
+gate:
+  endpoint: ${GATE_ENDPOINT}
+auth:
+  enabled: true
+  iap:
+    iapClientId: ${SPINNAKER_GATE_IAP_CLIENT_ID}
+    serviceAccountKeyPath: ${SERVICE_ACCOUNT_DEST}
+EOF
+}
+
+function s-disable-pipelines (){
+        APP="$1"
+  pipelines=()
+  while IFS= read -r pipeline; do
+    pipelines+=("$pipeline")
+  done < <(spin pipeline list --application "${APP}" | gojq -r '.[].name' | grep 'cloudrun')
+
+  printf "%s\n" "${pipelines[@]}" | parallel spin pipeline update --application "${APP}" --name {} --disabled
+}

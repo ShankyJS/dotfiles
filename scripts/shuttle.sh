@@ -2,6 +2,63 @@ sshstop() {
     ps | grep .ssh/google_compute_engine | awk '{ print $1 }' | xargs kill
 }
 
+# function sshstart () {
+#   if [[ ! $(op account get) ]]
+#   then
+#     echo "You are not logged in to 1Password, sign in"
+#     oplogin
+#   fi
+
+#   local user=jhan_silva_pager_com
+#   local project=shared-vpc-host-bd39
+#   local bastion=one-bastion-to-rule-them-all
+#   local zone=us-east1-c
+#   local region=us-east1
+
+#   # Networks
+#   local network=172.16.0.0/12
+#   local cloudsql=10.0.0.0/8
+
+#   if [[ $1 == *"-f"* ]]; then
+#     echo "Killing exisiting session!"
+#     echo "Please restart session to continue"
+#     pkill -f sshuttle
+#   fi
+
+#   while ! [[ $(gcloud compute instances list --project ${project} | grep "${bastion}.*RUNNING") ]]; do
+#     echo "${bastion} is NOT running"
+#     gcloud compute instances start "${bastion}" --project ${project}
+#   done
+#   echo "${bastion} is RUNNING"
+
+#   # Sshuttle Connection Block
+#   sudo pfctl -f /etc/pf.conf
+#   if ! [[ $(ps -o 'command' | awk '/sshuttle --ssh-cmd\=gcloud/{print $9}') ]]; then
+#     # Grab 2fa code
+#     local SUDO_PASSWORD=$(getrootpass)
+#     local authenticator_code=$(op item get pager-google --otp)
+#     # Use expect to spawn sshuttle and send login creds (output is silenced)
+#     expect <(cat << EOF
+# spawn sh -c {
+#   sshuttle --ssh-cmd="gcloud --project ${project} compute ssh --ssh-key-expire-after 2m --quiet --zone $zone --ssh-flag=\"-ServerAliveInterval=30\"" -r $bastion $network $cloudsql $atlas 216.239.32.0/18
+# }
+
+# expect -re "(\[0-9]): Security code from Google Authenticator application"
+# set authenticator_method \$expect_out(1,string)
+# expect "Enter the number for the authentication method to use:"
+# send "\$authenticator_method\r"
+# expect "Enter your one-time password:"
+# send "${authenticator_code}\r"
+# expect "client: Connected."
+# interact
+# EOF
+# ) &
+#   else
+#     echo "Shuttle already running!"
+#     echo "Try running: sshstart -f"
+#   fi
+# }
+
 function sshstart () {
   sshstop
   user=jhan_silva_pager_com
@@ -50,7 +107,7 @@ send "${authenticator_code}\r"
 expect "client: Connected."
 interact
 EOF
-) &
+)
   fi
 
   # Get gcloud config, and list namespaces

@@ -1,0 +1,77 @@
+#!/bin/zsh
+
+set -e  # Exit on error
+
+# Load Homebrew into PATH (for M1/M2 Macs)
+eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || true)"
+
+# If no ~/.zshrc, or it isn't the expected loader, copy our default
+if [ ! -f "$HOME/.zshrc" ] || ! grep -q '.config/zsh/.zshrc' "$HOME/.zshrc"; then
+  echo "📝 Setting up ~/.zshrc to delegate to ~/.config/zsh/.zshrc"
+  cp .zshrc_default "$HOME/.zshrc"
+fi
+
+# Source it now
+echo "📎 .zshrc has been set up to load from ~/.config/.zshrc"
+echo "👉 Restart your terminal or run 'exec zsh' to load changes"
+
+# Install brew packages from Brewfile
+install_brew_packages() {
+  echo "🍺 Installing Homebrew dependencies..."
+  brew bundle --file=./Brewfile
+}
+
+# Install Homebrew if not present
+if command -v brew >/dev/null 2>&1; then
+  echo "✅ Homebrew already installed"
+  install_brew_packages
+else
+  echo "⬇️  Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  install_brew_packages
+fi
+
+# Setup kubeconfig if missing
+if [ ! -f "$HOME/.kube/config" ]; then
+  echo "⚙️  Setting up kubeconfig..."
+
+  echo "📦 Installing GKE auth plugin"
+  gcloud components install gke-gcloud-auth-plugin
+
+  get_cluster() {
+    local name=$1
+    local region=$2
+    local project=$3
+    echo "🔐 Getting credentials for $name"
+    gcloud container clusters get-credentials "$name" --region "$region" --project "$project"
+  }
+
+  # List of clusters to fetch
+  get_cluster dev-1s               us-east1 develop-251413
+  get_cluster staging-1s           us-east1 staging-197117
+  get_cluster qa-1s                us-east1 staging-197117
+  get_cluster prod-1s              us-east1 production-197117
+  get_cluster prod-2s              us-east1 production-197117
+  get_cluster prod-3s              us-east1 production-197117
+  get_cluster platform-tooling-1a  us-east1 animated-sniffle
+  get_cluster prod-4s              us-east1 production-197117
+
+else
+  echo "✅ kubeconfig already exists. Skipping GKE setup."
+fi
+
+# 🧷 Stow dotfiles
+echo "🪢 Linking dotfiles with stow..."
+
+if ! command -v stow >/dev/null 2>&1; then
+  echo "🚨 GNU Stow not found! Installing..."
+  brew install stow
+fi
+
+# Run stow on relevant folders
+stow .
+
+echo "✅ Dotfiles linked successfully!"

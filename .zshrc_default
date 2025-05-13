@@ -1,0 +1,10 @@
+
+# Ensure HOME is used properly
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+# Expand the actual path before sourcing (avoids issues with ~ or lazy vars)
+if [ -f "$CONFIG_HOME/zsh/.zshrc" ]; then
+  source "$CONFIG_HOME/zsh/.zshrc"
+else
+  echo "❌ $CONFIG_HOME/zsh/.zshrc not found. Check your dotfiles setup."
+fi
