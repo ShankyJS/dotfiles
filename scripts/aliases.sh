@@ -15,6 +15,9 @@ alias reload='source ~/.config/zsh/.zshrc'
 alias oplogin='eval $(op signin)'
 alias getpass="op run --no-masking -- printenv PAGER_PASSWORD | pbcopy && echo 'Password copied to clipboard'"
 alias g13="/Users/shankyjs/Documents/os/garden-io/garden-versions/garden-13/bin/garden"
+alias kcertflow="kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces"
+alias trouble="kubectl run jhan-trouble --rm -i --tty --image nicolaka/netshoot -- /bin/bash"
+alias troubleh="kubectl run jhan-trouble-network --rm -i --tty --overrides='{\"spec\": {\"hostNetwork\": true}}' --image nicolaka/netshoot -- /bin/bash"
 export EDITOR="cursor -w"
 
 # Google Cloud aliases
